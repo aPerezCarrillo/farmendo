@@ -26,8 +26,6 @@ def load_data():
 
     return df, rotation, portfolio, demand, calendar_df
 
-df = load_data()
-
 # ========== STREAMLIT UI ==========
 st.title("🌱 Smart Crop Planning Dashboard")
 df, rotation_df, portfolio_df, demand_df, calendar_df = load_data()
@@ -39,30 +37,14 @@ soil_roles = df['Soil Role'].unique().tolist()
 months = list(calendar.month_name[1:])  # Jan to Dec
 regions = df['Region'].unique().tolist()
 
-selected_soil = st.sidebar.selectbox("Select Soil Role", soil_roles)
-selected_region = st.sidebar.selectbox("Select Region", regions)
-selected_month = st.sidebar.selectbox("Planting Month", months)
-top_n = st.sidebar.slider("Number of Crops to Recommend", min_value=3, max_value=15, value=5)
 
 # Current date
 today = datetime.today()
 today_str = today.strftime('%B %d %Y')
 # current_date = pd.to_datetime(today_str, format='%B %d %Y')
 
-# Convert month to date range
-month_idx = months.index(selected_month) + 1
-start_date = datetime(2024, month_idx, 1)
-end_date = datetime(2024, month_idx, 28)
 
-# Filter logic
-filtered = df[
-    (df['Soil Role'] == selected_soil) &
-    (df['Region'] == selected_region) &
-    (df['Planting Start'] <= end_date) &
-    (df['Planting End'] >= start_date)
-]
 
-recommended = filtered.sort_values('Gross Margin (₦)', ascending=False).head(top_n)
 
 # ========== TABS ===========
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
@@ -76,6 +58,25 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
 
 # --- Tab 1: Recommendations ---
 with tab1:
+    selected_soil = st.selectbox("Select Soil Role", soil_roles)
+    selected_region = st.selectbox("Select Region", regions)
+    selected_month = st.selectbox("Planting Month", months)
+    top_n = st.slider("Number of Crops to Recommend", min_value=3, max_value=15, value=5)
+
+    # Convert month to date range
+    month_idx = months.index(selected_month) + 1
+    start_date = datetime(2024, month_idx, 1)
+    end_date = datetime(2024, month_idx, 28)
+
+    # Filter logic
+    filtered = df[
+        (df['Soil Role'] == selected_soil) &
+        (df['Region'] == selected_region) &
+        (df['Planting Start'] <= end_date) &
+        (df['Planting End'] >= start_date)
+        ]
+
+    recommended = filtered.sort_values('Gross Margin (₦)', ascending=False).head(top_n)
     # Results
     if not recommended.empty:
         st.success(f"Showing top {top_n} crops for '{selected_soil}' that are in planting season ({selected_month})")
