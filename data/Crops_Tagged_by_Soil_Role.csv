@@ -1,0 +1,9 @@
+Crop,Soil Role,Rationale
+Cowpea,Improver,"Fixes nitrogen, improves soil fertility"
+Maize,Depleter,"High nutrient demand, depletes nitrogen and phosphorus"
+Cassava,Tolerant,"Tolerates poor soils, minimal improvement or depletion"
+Groundnut,Improver,Fixes nitrogen and improves organic content
+Sorghum,Tolerant,"Adapted to marginal soils, low fertilizer need"
+Soybean,Improver,"Nitrogen-fixer, enhances soil structure and fertility"
+Yam,Depleter,"Extracts high nutrients, especially potassium"
+Tomato,Depleter,"Heavy feeder, reduces soil nutrient balance"
